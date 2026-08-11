@@ -1,0 +1,142 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ModelForge 3D - Studio Editor</title>
+    <link rel="stylesheet" href="style.css">
+    
+    <!-- Font Awesome Icons & Google Fonts -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    
+    <!-- Three.js Importmap -->
+    <script type="importmap">
+    {
+        "imports": {
+            "three": "https://unpkg.com/three@0.181.1/build/three.module.js",
+            "three/addons/": "https://unpkg.com/three@0.181.1/examples/jsm/"
+        }
+    }
+    </script>
+</head>
+<body>
+
+    <!-- ========================================= -->
+    <!-- Top Menu & Navigation Bar -->
+    <!-- ========================================= -->
+    <header id="topNavbar">
+        <div class="logo">
+            <i class="fa-solid fa-cube logo-icon"></i> 
+            <span>ModelForge <small>v2.0</small></span>
+        </div>
+
+        <!-- Menu Navigation -->
+        <nav class="top-menu">
+            <div class="menu-item">File
+                <div class="dropdown-menu">
+                    <button id="newBtn"><i class="fa-solid fa-folder-open"></i> Open Scene</button>
+                    <button id="saveBtn"><i class="fa-solid fa-floppy-disk"></i> Save Scene</button>
+                    <hr>
+                    <button id="exportBtn"><i class="fa-solid fa-file-export"></i> Export GLTF</button>
+                    <button id="uploadBtn"><i class="fa-solid fa-rocket"></i> Export Rocket Part (.rkp)</button>
+                    <button id="importBtn"><i class="fa-solid fa-file-import"></i> Import GLTF/GLB</button>
+                </div>
+            </div>
+            <div class="menu-item">Add
+                <div class="dropdown-menu">
+                    <button id="cubeBtn"><i class="fa-solid fa-cube"></i> Cube</button>
+                    <button id="sphereBtn"><i class="fa-solid fa-globe"></i> Sphere</button>
+                    <button id="cylinderBtn"><i class="fa-solid fa-database"></i> Cylinder</button>
+                    <button id="coneBtn"><i class="fa-solid fa-play fa-rotate-270"></i> Cone</button>
+                    <button id="planeBtn"><i class="fa-solid fa-vector-square"></i> Plane</button>
+                </div>
+            </div>
+            <div class="menu-item">Tools
+                <div class="dropdown-menu">
+                    <button id="groupBtn"><i class="fa-solid fa-object-group"></i> Group Selected</button>
+                    <button id="ungroupBtn"><i class="fa-solid fa-object-ungroup"></i> Ungroup</button>
+                </div>
+            </div>
+        </nav>
+
+        <!-- Viewport Controls & Snapping Bar -->
+        <div class="viewport-header-controls">
+            <!-- Snapping -->
+            <button id="snapBtn" class="tool-toggle" title="Toggle Grid Snapping">
+                <i class="fa-solid fa-magnet"></i> Snap Off
+            </button>
+
+            <div class="v-divider"></div>
+
+            <!-- Viewport Shading Modes -->
+            <div class="shading-toggle-group">
+                <button id="wireframeModeBtn" title="Wireframe View"><i class="fa-solid fa-border-none"></i></button>
+                <button id="solidModeBtn" class="active" title="Solid View"><i class="fa-solid fa-cube"></i></button>
+                <button id="materialModeBtn" title="Material Preview"><i class="fa-solid fa-circle-half-stroke"></i></button>
+                <button id="renderedModeBtn" title="Rendered View"><i class="fa-solid fa-sun"></i></button>
+            </div>
+        </div>
+
+        <input id="fileInput" type="file" accept=".glb,.gltf" hidden>
+    </header>
+
+    <!-- ========================================= -->
+    <!-- Main Workspace -->
+    <!-- ========================================= -->
+    <div id="editor">
+        
+        <!-- Left Panel: Outliner / Scene Hierarchy -->
+        <aside id="leftPanel">
+            <div class="panel-header">
+                <h3><i class="fa-solid fa-sitemap"></i> Outliner</h3>
+                <span class="panel-actions"><i class="fa-solid fa-filter"></i></span>
+            </div>
+            <div class="panel-search">
+                <i class="fa-solid fa-magnifying-glass"></i>
+                <input type="text" id="hierarchySearch" placeholder="Search objects...">
+            </div>
+            <ul id="sceneTree"></ul>
+        </aside>
+
+        <!-- 3D Viewport -->
+        <main id="app">
+            <!-- Floating Transform Overlay Toolbar -->
+            <div id="transformToolbar">
+                <button id="moveBtn" class="active" title="Translate Tool (W)"><i class="fa-solid fa-up-down-left-right"></i></button>
+                <button id="rotateBtn" title="Rotate Tool (E)"><i class="fa-solid fa-rotate"></i></button>
+                <button id="scaleBtn" title="Scale Tool (R)"><i class="fa-solid fa-expand"></i></button>
+            </div>
+        </main>
+
+        <!-- Right Panel: Properties & Inspector -->
+        <aside id="rightPanel">
+            <!-- Blender Style Tab Navigation -->
+            <div class="property-tabs">
+                <button class="tab-btn active" data-tab="objectTab" title="Object Properties"><i class="fa-solid fa-cube"></i></button>
+                <button class="tab-btn" data-tab="materialTab" title="Material Properties"><i class="fa-solid fa-palette"></i></button>
+                <button class="tab-btn" data-tab="worldTab" title="World & Lighting"><i class="fa-solid fa-globe"></i></button>
+            </div>
+
+            <!-- Tab Contents -->
+            <div id="inspectorContent">
+                <p class="empty-msg">No object selected</p>
+            </div>
+        </aside>
+    </div>
+
+    <!-- ========================================= -->
+    <!-- Status & Info Bar -->
+    <!-- ========================================= -->
+    <footer id="statusBar">
+        <span id="statusText"><i class="fa-solid fa-circle-check"></i> Ready</span>
+        <div class="status-stats">
+            <span id="polyCount">Objects: 0</span>
+            <span id="fpsCount">FPS: 60</span>
+        </div>
+    </footer>
+
+    <!-- Main Entry Script -->
+    <script type="module" src="main.js"></script>
+</body>
+</html>
